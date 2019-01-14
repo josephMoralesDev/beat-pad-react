@@ -1,0 +1,15 @@
+.block {
+  width: auto;
+  height: 100px;
+  background-color: grey;
+}
+
+.audio-loaded {
+  background: orange;
+  -webkit-transition: background 1s; /* Safari */
+  transition: background 100ms;
+}
+
+button.block.audio-loaded:active {
+  background: green;
+}
