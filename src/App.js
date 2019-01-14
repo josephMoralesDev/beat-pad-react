@@ -12,6 +12,9 @@ class App extends Component {
       pads: [],
     }
     firebase.initializeApp(config);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+
   }
 
   componentDidMount() {
@@ -31,9 +34,49 @@ class App extends Component {
     });
   }
 
+  handleKeyDown(event) {
+    let keyArray = ['q','w','e','a','s','d','z','x','c'];
+
+    let index = keyArray.indexOf(event.key);
+    if (index >= 0) {
+      let audioId = this.state.pads[index].name + '-' + index;
+      var player = document.getElementById(audioId);
+      if (!player.parentElement.className.includes('active')) {
+        player.parentElement.className += " active"
+      }
+
+      if (player.ended) {
+        player.play();
+      }
+      else if (!player.ended) {
+        player.load();
+        player.play();
+      }
+    }
+  }
+
+  handleKeyUp(event) {
+    let keyArray = ['q','w','e','a','s','d','z','x','c'];
+
+    let index = keyArray.indexOf(event.key);
+
+    if (index >= 0) {
+      let audioId = this.state.pads[index].name + '-' + index;
+      var player = document.getElementById(audioId);
+      if (player.parentElement.className.includes('active')) {
+        player.parentElement.className = player.parentElement.className.replace(' active', '')
+      }
+    }
+
+  }
+
   render() {
     return (
-      <div className="App">
+      <div
+        className="App"
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.handleKeyUp}
+      >
         {this.state.pads &&
           <BlockTable pads={this.state.pads}/>
         }

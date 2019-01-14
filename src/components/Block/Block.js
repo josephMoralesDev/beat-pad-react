@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import './Block.css';
 
 class Block extends Component {
@@ -11,12 +10,7 @@ class Block extends Component {
 
   componentDidMount() {
     var player = document.getElementById(this.props.audioId);
-    if (this.props.isPlaying && player) {
-      player.play();
-    }
-    else if (!this.props.isPlaying && player) {
-      player.pause();
-    }
+    player.load();
   }
 
   componentDidUpdate(prevProps) {
@@ -29,7 +23,7 @@ class Block extends Component {
 
   handlePlay() {
     var player = document.getElementById(this.props.audioId);
-    // Typical usage (don't forget to compare props):
+
     if (player.ended) {
       player.play();
     }
@@ -41,7 +35,10 @@ class Block extends Component {
 
   render() {
     return (
-        <button onClick={() => this.handlePlay()} className={`block ${this.props.audioSource ? 'audio-loaded' : ''}`}>
+        <button
+          onClick={this.handlePlay}
+          className={`block ${this.props.audioSource ? 'audio-loaded' : ''}`}
+        >
           {this.props.padName}
           {this.props.audioSource &&
             <audio
@@ -54,10 +51,5 @@ class Block extends Component {
     );
   }
 }
-
-Block.defaultProps = {
-  isPlaying: false,
-  audioSource: null
-};
 
 export default Block;

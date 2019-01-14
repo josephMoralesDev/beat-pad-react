@@ -13,3 +13,7 @@
 button.block.audio-loaded:active {
   background: green;
 }
+
+button.block.audio-loaded.active {
+  background: green;
+}
