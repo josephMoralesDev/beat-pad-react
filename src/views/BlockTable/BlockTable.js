@@ -10,10 +10,9 @@ class BlockTable extends Component {
           <Block
             key={i}
             clipIndex={i}
-            handlePlay={this.props.handlePlay}
-            audioId={pad.clipId}
-            audioSource={pad.audioSource}
-            padName={pad.padName}
+            audioId={`${pad.name}-${i}`}
+            audioSource={pad.sound}
+            padName={pad.name}
           />
         )}
 
