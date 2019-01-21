@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import config from './config.js';
 import BlockTable from './views/BlockTable/BlockTable';
+import BeatToggle from './components/BeatToggle/index';
 import firebase from 'firebase';
 
 import './App.css';
@@ -10,27 +11,29 @@ class App extends Component {
     super(props);
     this.state = {
       pads: [],
+      padList: [],
+      selectedPad: 0,
     }
     firebase.initializeApp(config);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
-
+    this.handleToggleKits = this.handleToggleKits.bind(this)
+    this.handleFetchKit = this.handleFetchKit.bind(this);
   }
 
   componentDidMount() {
-    return firebase.database().ref('/husky-disko').once('value').then((snapshot) => {
-      var kit = snapshot.val();
+    firebase.database().ref('/kit-list').once('value').then((snapshot) => {
+      var kits = snapshot.val();
 
-      const newKit = [];
+      const newKits = [];
 
-      for (const key in kit) {
-        newKit.push({
-          name: key,
-          sound: kit[key]
-        });
+      for (const key in kits) {
+        newKits.push(key);
       }
 
-      this.setState({ pads: newKit });
+      this.setState({ padList: newKits }, () => {
+        this.handleFetchKit(this.state.padList[0]);
+      });
     });
   }
 
@@ -70,6 +73,36 @@ class App extends Component {
 
   }
 
+  handleFetchKit(kit) {
+    firebase.database().ref(`/kits/${kit}`).once('value').then((snapshot) => {
+      var kit = snapshot.val();
+
+      const newKit = [];
+
+      for (const key in kit) {
+        newKit.push({
+          name: key,
+          sound: kit[key]
+        });
+      }
+
+      this.setState({ pads: newKit });
+    });
+  }
+
+  handleToggleKits(direction) {
+    if (direction === 'right' && this.state.selectedPad < this.state.padList.length - 1) {
+      this.setState({selectedPad: this.state.selectedPad + 1}, () => {
+        this.handleFetchKit(this.state.padList[this.state.selectedPad]);
+      });
+    }
+    else if (direction === 'left' && this.state.selectedPad > 0) {
+      this.setState({selectedPad: this.state.selectedPad - 1}, () => {
+        this.handleFetchKit(this.state.padList[this.state.selectedPad]);
+      });
+    }
+  }
+
   render() {
     return (
       <div
@@ -80,6 +113,10 @@ class App extends Component {
         {this.state.pads &&
           <BlockTable pads={this.state.pads}/>
         }
+        <BeatToggle
+          changeKit={this.handleToggleKits}
+          label={this.state.padList[this.state.selectedPad]}
+        />
       </div>
     );
   }

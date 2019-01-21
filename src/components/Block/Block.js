@@ -14,6 +14,13 @@ class Block extends Component {
     player.load();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      var player = document.getElementById(this.props.audioId);
+      player.load();
+    }
+  }
+
   handlePlay() {
     var player = document.getElementById(this.props.audioId);
 
