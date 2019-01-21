@@ -1,7 +1,15 @@
 ## A Hopeful Future
 I like to imagine a future where kids do not need a $2000 laptop and $1000 dollars worth of plugins to make awesome music. Here is a start.
 
+Either tap the buttons or use the following keys to play:
+
+[q,w,e]
+[a,s,d]
+[z,x,c]
+
 Try it out here: https://beat-launcher.firebaseapp.com/
+
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
