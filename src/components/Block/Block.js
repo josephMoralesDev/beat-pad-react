@@ -9,16 +9,9 @@ class Block extends Component {
   }
 
   componentDidMount() {
+    this.tableInput.focus();
     var player = document.getElementById(this.props.audioId);
     player.load();
-  }
-
-  componentDidUpdate(prevProps) {
-    var player = document.getElementById(this.props.audioId);
-    // Typical usage (don't forget to compare props):
-      if (player) {
-        player.play();
-      }
   }
 
   handlePlay() {
@@ -38,6 +31,7 @@ class Block extends Component {
         <button
           onClick={this.handlePlay}
           className={`block ${this.props.audioSource ? 'audio-loaded' : ''}`}
+          ref={(input) => { this.tableInput = input; }}
         >
           {this.props.padName}
           {this.props.audioSource &&
