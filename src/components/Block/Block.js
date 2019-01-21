@@ -43,6 +43,7 @@ class Block extends Component {
           {this.props.audioSource &&
             <audio
               id={this.props.audioId}
+              preload='auto'
             >
               <source src={this.props.audioSource} type="audio/mp3" />
             </audio>
